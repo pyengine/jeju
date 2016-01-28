@@ -1,0 +1,45 @@
+# Introduction
+
+Jeju is intelligent provisioning system based on specification documents
+Each S/W project has instruction documents like REAME.md, INSTALL.md ...
+
+User can manually insall program based on INSTALL.md
+But the document may be ambiguously described.
+Jeju can automatically install the software instructed by INSTALL.md
+
+## Architecture
+
+[<img src="https://raw.githubusercontent.com/analytaps/jeju/master/examples/jeju_architecture.jpg">]
+
+
+This can help developer and user.
+  
+# Installation
+Jeju is python program. This can be easily installed by pip.
+If pip is not exist, run *apt-get install python-pip* or *yum install python-pip*
+
+~~~bash
+pip install jeju
+~~~
+
+# How to run
+
+If you want to know detailed options.
+
+~~~bash
+jeju -h
+~~~
+
+Usage:
+
+~~~bash
+jeju -m <markdown guide book>
+~~~
+
+# Guide Book
+
+You can see many examples in jeju guide-book repository.
+
+~~~text
+https://github.com/pyengine/jeju-guide
+~~~
