@@ -24,7 +24,7 @@ CUSTOM_KV = {}
 temp_key = None
 is_kv = False
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 welcome = """
 
@@ -446,7 +446,9 @@ def main():
     # Load hostname
     import socket
     KV['HOSTNAME'] = socket.gethostname()
+    KV['IP'] = socket.gethostbyname(KV['HOSTNAME'])
     logging.info("Update K[%s] = %s" % ('HOSTNAME', KV['HOSTNAME']))
+    logging.info("Update K[%s] = %s" % ('IP', KV['IP']))
 
     markdown(code)
     print KV
