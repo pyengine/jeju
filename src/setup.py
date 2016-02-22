@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name = "jeju",
-    version = "0.2.0",
+    version = "0.2.1",
     author = "Choonho Son",
     author_email = "choonho.son@gmail.com",
     description = ("Intelligent provisioning system based on specification documents"),

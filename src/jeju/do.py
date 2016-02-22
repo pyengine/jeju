@@ -24,7 +24,7 @@ CUSTOM_KV = {}
 temp_key = None
 is_kv = False
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 welcome = """
 
@@ -131,9 +131,11 @@ class JunRenderer(mistune.Renderer):
         #######################
         if options.interactive:
             print code
-            yn = raw_input("execute next? (Y/n)")
-            if yn.lower() == 'n':
+            yn = raw_input("execute next? (Yes/No/Skip)")
+            if yn.lower() == 'n' or yn.lower() == 'no':
                 sys.exit()
+            elif yn.lower() == 's' or yn.lower() == 'skip':
+                return "Skipped"
 
         #################################
         # lookahead : hint for file name 
