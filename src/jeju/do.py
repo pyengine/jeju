@@ -15,6 +15,7 @@ import mistune
 
 from jeju.executor.shell import *
 from jeju.executor.editor import *
+from jeju.executor.python import *
  
 N_LOOKAHEAD = 2
 LOOKAHEAD = None
@@ -24,7 +25,7 @@ CUSTOM_KV = {}
 temp_key = None
 is_kv = False
 
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 
 welcome = """
 
@@ -65,12 +66,14 @@ def clear():
 
 ########################
 # call executor
+# Update Plugin
 ########################
 executor = {
 'bash'  : shell_bash,
 'c'     : editor_text,
 'text'  : editor_text,
 'ini'   : editor_ini,
+'python'  : execute_python,
 }
 
 """
