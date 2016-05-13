@@ -25,7 +25,7 @@ CUSTOM_KV = {}
 temp_key = None
 is_kv = False
 
-__version__ = "0.2.3"
+__version__ = "0.2.4"
 
 welcome = """
 
@@ -375,8 +375,16 @@ def parse_kv(param):
     global KV
 
     items = param.split(",")
+    v = ""
     for item in items:
-        (k,v) = item.split("=")
+        kv = item.split("=")
+        if len(kv) == 1:
+            # This is value with comma(,)
+            # append previous k=v,new_value
+            v = '%s,%s' % (v,kv[0])
+        else:
+            (k,v) = kv
+            
         CUSTOM_KV[k] = v
         KV[k] = v
 
