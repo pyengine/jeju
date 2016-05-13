@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name = "jeju",
-    version = "0.2.4",
+    version = "0.3.0",
     author = "Choonho Son",
     author_email = "choonho.son@gmail.com",
     description = ("Intelligent provisioning system based on specification documents"),
@@ -25,7 +25,7 @@ setup(
         "License :: OSI Approved :: BSD License",
     ],
     zip_safe=True,
-    install_requires=['mistune','requests'],
+    install_requires=['mistune','requests','ruamel.yaml'],
     entry_points = {
         'console_scripts': [
             'jeju = jeju.do:main',

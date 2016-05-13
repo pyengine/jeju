@@ -13,10 +13,18 @@ Jeju can automatically install the software instructed by INSTALL.md
 
 
 This can help developer and user.
+# History
+
+Version | Description
+----    | ----
+0.3     | Support Yaml configuration update
   
 # Installation
 Jeju is python program. This can be easily installed by pip.
 If pip is not exist, run *apt-get install python-pip* or *yum install python-pip*
+
+For support yaml, please install python-dev package
+run *apt-get install python-dev* or *yum install python-devel*
 
 ~~~bash
 pip install jeju

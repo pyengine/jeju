@@ -16,6 +16,7 @@ import mistune
 from jeju.executor.shell import *
 from jeju.executor.editor import *
 from jeju.executor.python import *
+from jeju.executor.yaml import *
  
 N_LOOKAHEAD = 2
 LOOKAHEAD = None
@@ -25,7 +26,7 @@ CUSTOM_KV = {}
 temp_key = None
 is_kv = False
 
-__version__ = "0.2.4"
+__version__ = "0.3.0"
 
 welcome = """
 
@@ -74,6 +75,7 @@ executor = {
 'text'  : editor_text,
 'ini'   : editor_ini,
 'python'  : execute_python,
+'yaml'  : execute_yaml,
 }
 
 """
