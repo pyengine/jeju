@@ -15,6 +15,7 @@ import mistune
 
 from jeju.executor.shell import *
 from jeju.executor.editor import *
+from jeju.executor.expect import *
 from jeju.executor.python import *
 from jeju.executor.yaml import *
  
@@ -26,7 +27,7 @@ CUSTOM_KV = {}
 temp_key = None
 is_kv = False
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
 welcome = """
 
@@ -72,6 +73,7 @@ def clear():
 executor = {
 'bash'  : shell_bash,
 'c'     : editor_text,
+'expect'  : shell_expect,
 'text'  : editor_text,
 'ini'   : editor_ini,
 'python'  : execute_python,
