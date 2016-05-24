@@ -4,6 +4,7 @@
 ############################################
 import string
 import uuid
+import logging
 
 import ruamel.yaml
 from ruamel.yaml.util import load_yaml_guess_indent
@@ -16,9 +17,9 @@ def replaceable(code, kv):
     for key in keys:
         nkey = "${%s}" % key
         code = string.replace(code, nkey, kv[key])
-    print '#' * 40
-    print code
-    print '#' * 40
+    logging.debug("#" * 20 + "\n%s" % code)
+    logging.debug("#" * 20)
+ 
     return code
 
 def find_file_path(lookahead):
@@ -51,5 +52,5 @@ def execute_yaml(**kwargs):
     config.update(config2)
 
     ruamel.yaml.round_trip_dump(config, open(file_path, 'w'), indent=ind, block_seq_indent=bsi)
-    return "Yaml executed"
+    return {'input': rcode, 'output':open(file_path,'r').read()}
 

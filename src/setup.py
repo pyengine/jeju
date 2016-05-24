@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name = "jeju",
-    version = "0.3.1",
+    version = "0.3.2",
     author = "Choonho Son",
     author_email = "choonho.son@gmail.com",
     description = ("Intelligent provisioning system based on specification documents"),
@@ -31,5 +31,8 @@ setup(
             'jeju = jeju.do:main',
             ],
         },
+    data_files = [
+                    ('/var/lib/jeju',[])
+                ],
 )
 

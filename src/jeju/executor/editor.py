@@ -1,6 +1,7 @@
 import string
 import ConfigParser
 import io
+import logging
 
 def replaceable(code, kv):
     # change keyword to value
@@ -10,14 +11,13 @@ def replaceable(code, kv):
     for key in keys:
         nkey = "${%s}" % key
         code = string.replace(code, nkey, kv[key])
-    print '#' * 40
-    print code
-    print '#' * 40
+    logging.debug("#" * 20 + "\n%s" % code)
+    logging.debug("#" * 20)
+ 
     return code
 
 
 def find_file_path(lookahead):
-    print lookahead
     if lookahead == None:
         return None
     ctx = lookahead['text']
@@ -33,14 +33,14 @@ def editor_text(**kwargs):
 
     file_path = find_file_path(kwargs['lookahead'])
     if file_path == None:
-        msg = "[DEBUG] I don't know how to edit!"
-        print msg
+        msg = "Cannot find content:%s" % lookahead['text']
+        logging.error(msg)
         return msg
     fp = open(file_path, 'w')
     rcode = replaceable(code, kv)
     fp.write(rcode)
     fp.close()
-    return "[DEBUG] success to create : %s" % file_path
+    return {'output': rcode}
 
 ##############################
 # INI editor
@@ -65,8 +65,8 @@ def editor_ini(**kwargs):
 
     file_path = find_file_path(kwargs['lookahead'])
     if file_path == None:
-        msg = "[DEBUG] I don't know how to edit!"
-        print msg
+        msg = "Cannot find content path: %s" % lookahead['text']
+        logging.error(msg)
         return msg
     orig = ConfigParser.ConfigParser()
     orig.readfp(open(file_path))
@@ -74,8 +74,8 @@ def editor_ini(**kwargs):
     for section in added.sections():
         # There is no section
         if orig.has_section(section) == False:
-            msg = "[DEBUG] Add new section"
-            print msg
+            msg = "Add new section"
+            logging.debug(msg)
             orig.add_section(section)
         # Add item = value in section
         for (item,value) in added.items(section):
@@ -87,10 +87,6 @@ def editor_ini(**kwargs):
     # Write to file
     fp = open(file_path, 'w')
     orig.write(fp)
+    new_content = orig.read()
     fp.close()
-    msg = "Update %s ini file" % file_path
-    return msg
-
-
-    
-        
+    return {'output': new_content}

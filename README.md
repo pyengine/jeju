@@ -18,6 +18,7 @@ This can help developer and user.
 Version | Description
 ----    | ----
 0.3     | Support Yaml configuration update
+0.3.2   | Support fine grained logging /var/log/jeju.log
   
 # Installation
 Jeju is python program. This can be easily installed by pip.

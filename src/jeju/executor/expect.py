@@ -2,8 +2,10 @@
 # This is very naive replacement algorithm
 # TODO
 ############################################
+import subprocess
 import string
 import uuid
+import logging
 
 # TODO: configurable variable
 TEMP_DIR = "/tmp"
@@ -16,9 +18,9 @@ def replaceable(code, kv):
     for key in keys:
         nkey = "${%s}" % key
         code = string.replace(code, nkey, kv[key])
-    print '#' * 40
-    print code
-    print '#' * 40
+    logging.debug("#" * 20 + "\n%s" % code)
+    logging.debug("#" * 20)
+
     return code
 
 def shell_expect(**kwargs):
@@ -35,8 +37,11 @@ def shell_expect(**kwargs):
     fp = open(temp_file, 'w')
     fp.write(rcode)
     fp.close()
-    os.system("expect %s" % temp_file)
+
+    # Execute Cmd
+    cmd = ['expect', temp_file]
+    proc = subprocess.Popen(cmd, stdout = subprocess.PIPE)
+    (out, err) = proc.communicate()
+
     os.remove(temp_file)
-    return "Expect executed"
-
-
+    return {'input':rcode, 'output':out, 'error':err}

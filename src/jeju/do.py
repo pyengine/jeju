@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 import logging
+import logging.handlers
 import time
 import os
 import pwd
@@ -8,6 +9,8 @@ import re
 import sys
 import urllib2
 import platform
+
+import os.path
 
 from optparse import OptionParser
 
@@ -27,7 +30,7 @@ CUSTOM_KV = {}
 temp_key = None
 is_kv = False
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 
 welcome = """
 
@@ -39,18 +42,31 @@ welcome = """
 |       ||   |___ |       ||       |
 |_______||_______||_______||_______|
 
-Project site:
 https://github.com/pyengine/jeju
 
-Welcome to Beautiful Jeju Island, Korea
-http://english.jeju.go.kr
+Copyright(c) 2016 Choonho Son.
+All rights reserved.
 
-Copyright(c) 2016 Choonho Son. All rights reserved.
 Version: %s
 
 """ % __version__
 
 usage = "usage: %prog [options] arg"
+
+# set up logging to file - see previous section for more details
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(name)-8s %(levelname)-8s %(message)s',
+                    datefmt='%m-%d %H:%M',
+                    filename='/var/log/jeju.log',
+                    filemode='a')
+
+# define a Handler which writes INFO messages or higher to the sys.stderr
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+# set a format which is simpler for console use
+formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+# tell the handler to use this format
+console.setFormatter(formatter)
 
 def clear():
     os.system('clear')
@@ -121,6 +137,9 @@ def change_dir(new_dir):
 
 
 class JunRenderer(mistune.Renderer):
+    def __init__(self, **kwargs):
+        mistune.Renderer.__init__(self, **kwargs)
+
     def block_code(self, code, lang):
         #######################
         # Interactive mode
@@ -137,8 +156,48 @@ class JunRenderer(mistune.Renderer):
         # lookahead : hint for file name 
         # kv : replaceable dictionary
         #################################
-        return executor[lang](code=code, lookahead=LOOKAHEAD, kv=KV)
+        output = executor[lang](code=code, lookahead=LOOKAHEAD, kv=KV)
+        # output is dictionary
+        # {'input':input_code, 'output': output_code, 'error':error_if_exist}
 
+        if type(output) != dict:
+            # This is error of pre-processing
+            logging.error(output)
+            return '<pre><code class="lang-bash">%s</code></pre>\n' % (lang, output)
+
+        result = ""
+        if output.has_key('input') and (output['input'] != None and output['input'] != ''):
+            added = output['input']
+            added = added.rstrip('\n')
+            if not lang:
+                added = mistune.escape(added, smart_amp=False)
+                return '<pre><code>%s\n</code></pre>\n' % added
+            added = mistune.escape(added, quote=True, smart_amp=False)
+            result = result + '<b>Input:</b></br>'
+            result = result + '<pre><code class="lang-%s">%s\n</code></pre>\n' % (lang, added)
+
+        if output.has_key('output') and (output['output'] != None and output['output'] != ''):
+            logging.debug(output['output'])
+            added = output['output']
+            added = added.rstrip('\n')
+            if not lang:
+                added = mistune.escape(added, smart_amp=False)
+                return '<pre><code>%s\n</code></pre>\n' % added
+            added = mistune.escape(added, quote=True, smart_amp=False)
+            result = result + "<b>Output:</b></br>"
+            result = result + '<pre><code class="lang-%s">%s\n</code></pre>\n' % (lang, added)
+
+        if output.has_key('error') and (output['error'] != None and output['error'] != ''):
+            logging.error(output['error'])
+            added = output['error']
+            added = added.rstrip('\n')
+            if not lang:
+                added = mistune.escape(added, smart_amp=False)
+                return '<pre><code>%s\n</code></pre>\n' % added
+            added = mistune.escape(added, quote=True, smart_amp=False)
+            result = result + "<b>Error:</b></br>"
+            result = result + '<pre><code class="lang-%s">%s\n</code></pre>\n' % (lang, added)
+        return result
 
     def header(self, text, level, raw=None):
         """Rendering header/heading tags like ``<h1>`` ``<h2>``.
@@ -147,7 +206,7 @@ class JunRenderer(mistune.Renderer):
         :param level: a number for the header level, for example: 1.
         :param raw: raw text content of the header.
         """
-        print "%s %s" % (toi(level), text)
+        logging.debug("%s %s" % (toi(level), text))
         time.sleep(1)
         return '<h%d>%s</h%d>\n' % (level, text, level)
 
@@ -282,9 +341,9 @@ def open_doc(f):
             output = fp.read()
             fp.close()
         except:
-            print "Guide book does not exist in local disk"
+            logging.info("Guide book does not exist in local disk")
             guess = "%s/%s" % (options.repo, f)
-            print "Find repository: %s" % guess
+            logging.info("Find repository: %s" % guess)
             try: 
                 ret = urllib2.urlopen(guess)
                 if ret.code == 200:
@@ -295,7 +354,7 @@ def open_doc(f):
                 os = distro['distname'].split(' ')[0].lower()
                 guess = "%s/%s/%s" % (options.repo, os, f)
                 
-                print "Find repository: %s" % guess
+                logging.info("Find repository: %s" % guess)
                 try:
                     ret = urllib2.urlopen(guess)
                     if ret.code == 200:
@@ -303,7 +362,7 @@ def open_doc(f):
                 except:
                     ver2 = distro['ver'].split('.')
                     guess = "%s/%s/%s.%s/%s" % (options.repo, os, ver2[0], ver2[1], f)
-                    print "Find repository: %s" % guess
+                    logging.info("Find repository: %s" % guess)
                     try:
                         ret = urllib2.urlopen(guess)
                         output = ret.read()
@@ -389,10 +448,10 @@ def main():
 
     parser.add_option("-l","--logging", dest="logging", \
                     help="Logging level (CRITICAL | ERROR | WARNING | INFO | DEBUG), \
-                    default=INFO",metavar="logging level", default="INFO")
+                    default=DEBUG",metavar="logging level", default="DEBUG")
 
     parser.add_option("-V","--verbose", dest="verbose", \
-                    help="Verbose level (all | title | code), default=all", \
+                    help="Verbose level (console | file | all), default=all", \
                     metavar="verbose level", default="all")
 
     parser.add_option("-i","--interactive", dest="interactive", \
@@ -436,27 +495,61 @@ def main():
     ###############################
     # Show Jeju mascoat
     ###############################
-    clear()
-    print welcome
-    time.sleep(3)
+    if options.verbose and options.verbose == "file":
+        pass
+    else:
+        clear()
+        print welcome
+        time.sleep(3)
 
-    logging.basicConfig(level=options.logging)
+        # split path to (prefix, file)
+    if options.md: 
+        (prefix, f) = os.path.split(options.md)
+    else:
+        f = "test"
 
-#    # Load environment variable
-#    for key in os.environ.keys():
-#        logging.debug("%15s %s" % (key, os.environ[key]))
-#        KV[key] = os.environ[key]
+    if options.logging == "DEBUG":
+        level = logging.DEBUG
+    elif options.logging == "INFO":
+        level = logging.INFO
+    elif options.logging == "WARNING":
+        level = logging.WARNING
+    elif options.logging == "ERROR":
+        level = logging.ERROR
+    elif options.logging == "CRITICAL":
+        level = logging.CRITICAL
+    else:
+        level = logging.DEBUG
+
+    console.setLevel(level)
+
+    if options.verbose:
+        if options.verbose == "console" or options.verbose == "all":
+            # add the handler to the root logging
+            logging.getLogger('').addHandler(console)
+    else:
+        logging.getLogger('').addHandler(console)
 
     # Load hostname
     import socket
     KV['HOSTNAME'] = socket.gethostname()
     KV['IP'] = socket.gethostbyname(KV['HOSTNAME'])
+
+    if options.md:
+        logging.info("Start Jeju: %s" % options.md)
+    else:
+        logging.info("Start Jeju: test")
+    if options.kv:
+        logging.info("       -kv: %s" % options.kv)
+
     logging.info("Update K[%s] = %s" % ('HOSTNAME', KV['HOSTNAME']))
     logging.info("Update K[%s] = %s" % ('IP', KV['IP']))
 
-    markdown(code)
-    print KV
-
+    output = markdown(code)
+    # write to file
+    fp = open('./%s.html' % f, 'w')
+    fp.write(output)
+    fp.close()
 
 if __name__ == "__main__":
     main()
