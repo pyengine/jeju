@@ -6,6 +6,7 @@ import subprocess
 import string
 import uuid
 import logging
+import sys
 
 # TODO: configurable variable
 TEMP_DIR = "/tmp"
@@ -39,10 +40,13 @@ def execute_python(**kwargs):
     fp.close()
 
     # Execute Cmd
+    
     cmd = ['python',temp_file]
-    proc = subprocess.Popen(cmd, stdout = subprocess.PIPE)
+    cmd2 = 'python %s' % temp_file
+    #subprocess.call(cmd)
+    proc = subprocess.Popen(cmd)
     (out, err) = proc.communicate()
-
+    #out = subprocess.check_output(cmd, stdout=subprocess.STDOUT)
     os.remove(temp_file)
-    return {'input':rcode, 'output':out, 'error':err}
+    return {'input':rcode, 'output':out, 'error':''}
 

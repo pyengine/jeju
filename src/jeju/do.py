@@ -55,16 +55,13 @@ usage = "usage: %prog [options] arg"
 
 # set up logging to file - see previous section for more details
 logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(name)-8s %(levelname)-8s %(message)s',
-                    datefmt='%m-%d %H:%M',
-                    filename='/var/log/jeju.log',
-                    filemode='a')
+                    datefmt='%m-%d %H:%M')
 
 # define a Handler which writes INFO messages or higher to the sys.stderr
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 # set a format which is simpler for console use
-formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+formatter = logging.Formatter('%(levelname)-8s %(message)s')
 # tell the handler to use this format
 console.setFormatter(formatter)
 
@@ -450,6 +447,11 @@ def main():
                     help="Logging level (CRITICAL | ERROR | WARNING | INFO | DEBUG), \
                     default=DEBUG",metavar="logging level", default="DEBUG")
 
+    parser.add_option("-L","--logging-file", dest="log_file", \
+                    help="Logging file (/tmp/jeju.log), \
+                    default=/tmp/jeju.log",metavar="logging file")
+
+
     parser.add_option("-V","--verbose", dest="verbose", \
                     help="Verbose level (console | file | all), default=all", \
                     metavar="verbose level", default="all")
@@ -523,12 +525,12 @@ def main():
 
     console.setLevel(level)
 
-    if options.verbose:
-        if options.verbose == "console" or options.verbose == "all":
-            # add the handler to the root logging
-            logging.getLogger('').addHandler(console)
-    else:
-        logging.getLogger('').addHandler(console)
+    if options.log_file:
+        fh = logging.FileHandler(options.log_file)
+        formatter = logging.Formatter('%(asctime)s %(name)-8s %(levelname)-8s %(message)s')
+        fh.setFormatter(formatter)
+        fh.setLevel(level)
+        logging.getLogger('').addHandler(fh)
 
     # Load hostname
     import socket
@@ -547,7 +549,7 @@ def main():
 
     output = markdown(code)
     # write to file
-    fp = open('./%s.html' % f, 'w')
+    fp = open('/tmp/%s.html' % f, 'w')
     fp.write(output)
     fp.close()
 

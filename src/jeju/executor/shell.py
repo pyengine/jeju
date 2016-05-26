@@ -46,9 +46,10 @@ def shell_bash(**kwargs):
 
     # Execute Cmd
     cmd = ['bash',temp_file]
-    proc = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-    (out, err) = proc.communicate()
-
+    cmd2 = 'bash %s' % temp_file
+    #proc = subprocess.Popen(cmd)
+    #(out, err) = proc.communicate()
+    out = subprocess.check_output(cmd2, shell=True)
     # Remove tempfile
     os.remove(temp_file)
-    return {'input':rcode, 'output':out, 'error':err}
+    return {'input':rcode, 'output':out, 'error':'err'}
