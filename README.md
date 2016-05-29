@@ -9,7 +9,7 @@ Jeju can automatically install the software instructed by INSTALL.md
 
 ## Architecture
 
-[<img src="https://raw.githubusercontent.com/analytaps/jeju/master/examples/jeju_architecture.jpg">]
+[<img src="https://raw.githubusercontent.com/pyengine/jeju/master/jeju_architecture.png">]
 
 
 This can help developer and user.
