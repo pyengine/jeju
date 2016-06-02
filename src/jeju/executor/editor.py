@@ -87,6 +87,6 @@ def editor_ini(**kwargs):
     # Write to file
     fp = open(file_path, 'w')
     orig.write(fp)
-    new_content = orig.read()
+    new_content = orig.readfp(open(file_path))
     fp.close()
     return {'output': new_content}
