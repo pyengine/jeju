@@ -20,6 +20,7 @@ Version | Description
 0.3     | Support Yaml configuration update
 0.3.2   | Support fine grained logging /var/log/jeju.log
 0.3.4   | Fix ini editor bug
+0.3.5   | Better console output
   
 # Installation
 Jeju is python program. This can be easily installed by pip.

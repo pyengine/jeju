@@ -41,12 +41,14 @@ def execute_python(**kwargs):
 
     # Execute Cmd
     
-    cmd = ['python',temp_file]
     cmd2 = 'python %s' % temp_file
-    #subprocess.call(cmd)
-    proc = subprocess.Popen(cmd)
-    (out, err) = proc.communicate()
-    #out = subprocess.check_output(cmd, stdout=subprocess.STDOUT)
+    proc = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE)
+    out = ""
+    while proc.poll() is None:
+        line = proc.stdout.readline()
+        print line
+        out = out + line
+ 
     os.remove(temp_file)
     return {'input':rcode, 'output':out, 'error':''}
 

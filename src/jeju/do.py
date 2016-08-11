@@ -30,7 +30,7 @@ CUSTOM_KV = {}
 temp_key = None
 is_kv = False
 
-__version__ = "0.3.4"
+__version__ = "0.3.5"
 
 welcome = """
 
@@ -469,7 +469,6 @@ def main():
     parser.add_option("-r","--repo", dest="repo", \
                     help="Repository of jeju guide book", \
                     default="https://raw.githubusercontent.com/pyengine/jeju-guide/master")
-
 
     parser.add_option("-v","--version", dest="version", \
                     help="Show current version", \

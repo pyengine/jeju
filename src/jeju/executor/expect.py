@@ -40,8 +40,13 @@ def shell_expect(**kwargs):
 
     # Execute Cmd
     cmd = ['expect', temp_file]
-    proc = subprocess.Popen(cmd, stdout = subprocess.PIPE)
-    (out, err) = proc.communicate()
-
+    cmd2 = 'expect %s' % temp_file
+    proc = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE)
+    out = ""
+    while proc.poll() is None:
+        line = proc.stdout.readline()
+        print line
+        out = out + line
+ 
     os.remove(temp_file)
     return {'input':rcode, 'output':out, 'error':err}
