@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # jeju documentation build configuration file, created by
-# sphinx-quickstart on Thu Aug 11 10:28:23 2016.
+# sphinx-quickstart on Thu Aug 11 11:16:47 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -20,8 +20,6 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-from recommonmark.parser import CommonMarkParser
-
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -39,12 +37,13 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
+from recommonmark.parser import CommonMarkParser
+
 source_parsers = {
-    '.md': CommonMarkParser,
+    'md': CommonMarkParser,
 }
 
-source_suffix = '.md'
+source_suffix = ['.rst', '.md']
 
 # The encoding of source files.
 #
