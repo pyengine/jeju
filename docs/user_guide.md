@@ -23,16 +23,16 @@ Bash is the most popular script language for automation.
 
 You can use bash script with **bash** keyword
 
-> \~\~\~bash
+> ~~~bash
 > *any bash script*
 > *any bash script*
-> \~\~\~
+> ~~~
 
 For example,
 
-> \~\~\~bash
-> echo $hostname
->\~\~\~
+~~~bash
+echo $hostname
+~~~
 
 
 ## Python
@@ -41,17 +41,17 @@ Python is the one of popular script language for programming.
 
 You can use python script with **python** keyword
 
-> \~\~\~python
+> ~~~python
 > *any python language*
 > *any python language*
-> \~\~\~
+> ~~~
 
 For example,
 
-> \~\~\~python
-> import os
-> os.system('hostname')
-> \~\~\~
+~~~python
+import os
+os.system('hostname')
+~~~
 
 ## Text
 
@@ -61,9 +61,17 @@ Text requires file path for saving. This must be described with **edit <file pat
 
 > edit *<file path>*
 > 
-> \~\~\~text
+> ~~~text
 > *any text*
 > *any text*
-> \~\~\~
+> ~~~
 
+For example,
+
+edit /tmp/test.config
+
+~~~text
+A=1
+B=2
+~~~
 
