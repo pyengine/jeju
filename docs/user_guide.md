@@ -63,9 +63,9 @@ os.system('hostname')
 
 Text is used for creating new file with some content like configuration file.
 
-Text requires file path for saving. This must be described with **edit <file path>** before **Code block** 
+Text requires file path for saving. This must be described with **edit file path** before **Code block** 
 
-> edit *<file path>*
+> edit file path
 
 > 
 
