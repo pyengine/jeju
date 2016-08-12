@@ -32,10 +32,17 @@ You can use bash script with **bash** keyword
 
 For example,
 
+````
 ~~~bash
 echo $hostname
 ~~~
+````
 
+This looks like in your viewer.
+
+~~~bash
+echo $hostname
+~~~
 
 ## Python
 
@@ -52,12 +59,21 @@ You can use python script with **python** keyword
 
 For example,
 
+````
+~~~python
+import os
+os.system('hostname')
+~~~
+````
+
+This looks like in your viewer.
+
 ~~~python
 import os
 os.system('hostname')
 ~~~
 
-## Text
+# Text
 
 Text is used for creating new file with some content like configuration file.
 
@@ -74,10 +90,20 @@ edit file path
 
 For example,
 
+````
 edit /tmp/test.config
 
 ~~~text
 A=1
 B=2
 ~~~
+````
 
+This looks like
+
+edit /tmp/test.config
+
+~~~text
+A=1
+B=2
+~~~
