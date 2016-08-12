@@ -11,11 +11,11 @@ expect  | 0.3.5
 
 The format is write any syntax within **Code block**.
 
-> ~~~syntax type
-
-> code block
-
-> ~~~
+````
+~~~syntax type
+code block
+~~~
+````
 
 ## bash
 
@@ -23,13 +23,12 @@ Bash is the most popular script language for automation.
 
 You can use bash script with **bash** keyword
 
-> ~~~bash
-
-> *any bash script*
-
-> *any bash script*
-
-> ~~~
+````
+~~~bash
+*any bash script*
+*any bash script*
+~~~
+````
 
 For example,
 
@@ -44,13 +43,12 @@ Python is the one of popular script language for programming.
 
 You can use python script with **python** keyword
 
-> ~~~python
-
-> *any python language*
-
-> *any python language*
-
-> ~~~
+````
+~~~python
+*any python language*
+*any python language*
+~~~
+````
 
 For example,
 
@@ -65,17 +63,14 @@ Text is used for creating new file with some content like configuration file.
 
 Text requires file path for saving. This must be described with **edit file path** before **Code block** 
 
-> edit file path
+````
+edit file path
 
-> 
-
-> ~~~text
-
-> *any text*
-
-> *any text*
-
-> ~~~
+~~~text
+*any text*
+*any text*
+~~~
+````
 
 For example,
 
