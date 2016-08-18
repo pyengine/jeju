@@ -12,8 +12,8 @@ try:
     import ruamel.yaml
     from ruamel.yaml.util import load_yaml_guess_indent
 except ImportError:
-    self.logger.error("Install ruamel.yaml")
-    self.logger.error("Command: pip install ruamel.yaml")
+    logging.error("Install ruamel.yaml")
+    logging.error("Command: pip install ruamel.yaml")
     exist_ruamel = False
 
 def replaceable(code, kv):
