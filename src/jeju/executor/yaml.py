@@ -12,8 +12,25 @@ try:
     import ruamel.yaml
     from ruamel.yaml.util import load_yaml_guess_indent
 except ImportError:
-    logging.error("Install ruamel.yaml")
-    logging.error("Command: pip install ruamel.yaml")
+    err_msg = """
+    ##################################################################
+    # ! Warning                                                      #
+    # rumal.yaml library does not exist                              #
+    # jeju *can not* execute yaml plugin!                            #
+    #                                                                #
+    # To install ruamel.yaml                                         #
+    # (RedHat, CentOS)                                               #
+    # yum install python-devel gcc                                   #
+    # pip install ruamel.yaml                                        #
+    #                                                                #
+    # (Debian, Ubuntu)                                               #
+    # apt-get install python-dev gcc                                 #
+    # pip install ruamel.yaml                                        #
+    ##################################################################
+    """
+    print err_msg
+    import time
+    time.sleep(5)
     exist_ruamel = False
 
 def replaceable(code, kv):
@@ -53,6 +70,7 @@ def execute_yaml(**kwargs):
         return msg
 
     if exist_ruamel == False:
+        logger.error(err_msg)
         return {'input':rcode, 'output':'[ERROR] Install ruamel.yaml'}
 
     config, ind, bsi = load_yaml_guess_indent(open(file_path))
