@@ -8,6 +8,8 @@ import uuid
 import logging
 import os
 
+import jeju
+
 # TODO: configurable variable
 TEMP_DIR = "/tmp"
 
@@ -31,6 +33,7 @@ def shell_bash(**kwargs):
     @return: 
         dictionary of input, output, error
     """
+    print jeju.__version__
     code = kwargs['code']
     kv = kwargs['kv']
 
@@ -47,14 +50,21 @@ def shell_bash(**kwargs):
     # Execute Cmd
     cmd = ['bash',temp_file]
     cmd2 = 'bash %s' % temp_file
-    proc = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE)
-    out = ""
-    while proc.poll() is None:
-        line = proc.stdout.readline()
-        print line
-        out = out + line
-    #(out, err) = proc.communicate()
-    #out = subprocess.check_output(cmd2, shell=True)
+    if jeju.__logging__ == 'file':
+        proc = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE)
+        out = ""
+        while proc.poll() is None:
+            line = proc.stdout.readline()
+            print line
+            out = out + line
+     
+
+    else:
+        proc = subprocess.Popen(cmd2, shell=True)
+        (out, err) = proc.communicate()
+        out = "#### Displayed by Console ####"
+
+
     # Remove tempfile
     os.remove(temp_file)
     return {'input':rcode, 'output':out, 'error':''}

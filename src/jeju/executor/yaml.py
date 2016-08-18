@@ -6,8 +6,15 @@ import string
 import uuid
 import logging
 
-import ruamel.yaml
-from ruamel.yaml.util import load_yaml_guess_indent
+exist_ruamel = True
+
+try:
+    import ruamel.yaml
+    from ruamel.yaml.util import load_yaml_guess_indent
+except ImportError:
+    self.logger.error("Install ruamel.yaml")
+    self.logger.error("Command: pip install ruamel.yaml")
+    exist_ruamel = False
 
 def replaceable(code, kv):
     # change keyword to value
@@ -44,6 +51,9 @@ def execute_yaml(**kwargs):
         msg = "[DEBUG] I don't know how to edit!"
         print msg
         return msg
+
+    if exist_ruamel == False:
+        return {'input':rcode, 'output':'[ERROR] Install ruamel.yaml'}
 
     config, ind, bsi = load_yaml_guess_indent(open(file_path))
     config2, ind2, bsi2 = load_yaml_guess_indent(rcode)

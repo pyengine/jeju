@@ -8,6 +8,8 @@ import uuid
 import logging
 import sys
 
+import jeju
+
 # TODO: configurable variable
 TEMP_DIR = "/tmp"
 
@@ -39,16 +41,24 @@ def execute_python(**kwargs):
     fp.write(rcode)
     fp.close()
 
+    print jeju.__logging__
     # Execute Cmd
-    
     cmd2 = 'python %s' % temp_file
-    proc = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE)
-    out = ""
-    while proc.poll() is None:
-        line = proc.stdout.readline()
-        print line
-        out = out + line
- 
+    if jeju.__logging__ == 'file':
+        proc = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE)
+        out = ""
+        while proc.poll() is None:
+            line = proc.stdout.readline()
+            print line
+            out = out + line
+     
+
+    else:
+        proc = subprocess.Popen(cmd2, shell=True)
+        (out, err) = proc.communicate()
+        out = "#### Displayed by Console ####"
+
     os.remove(temp_file)
-    return {'input':rcode, 'output':out, 'error':''}
+
+    return {'input':rcode, 'output':out, 'error':err}
 

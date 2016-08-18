@@ -39,7 +39,8 @@ expect  | expect
 ## RedHat, CentOS
 
 ~~~bash
-yum install python-devel gcc expect python-pip
+yum install epel-release
+yum install python-pip
 pip install jeju
 ~~~
 
@@ -47,9 +48,42 @@ pip install jeju
 
 ~~~bash
 apt-get update
-apt-get install python-dev gcc expect python-pip
+apt-get install python-pip
 pip install jeju
 ~~~
+
+# Plugin
+
+*yaml*
+If you want to use yaml plugin,
+You need to install ruamel.yaml
+
+~~~bash
+yum install python-devel gcc
+pip install ruamel.yaml
+~~~
+
+or
+
+~~~bash
+apt-get install python-dev gcc
+pip install ruamel.yaml
+~~~
+
+*expect*
+If you want to use expect plugin,
+You need to install expect
+
+~~~bash
+yum install expect
+~~~
+
+or
+
+~~~bash
+apt-get install expect
+~~~
+
 
 # How to run
 

@@ -16,6 +16,7 @@ from optparse import OptionParser
 
 import mistune
 
+import jeju
 from jeju.executor.shell import *
 from jeju.executor.editor import *
 from jeju.executor.expect import *
@@ -29,8 +30,6 @@ KV = {}
 CUSTOM_KV = {} 
 temp_key = None
 is_kv = False
-
-__version__ = "0.3.5"
 
 welcome = """
 
@@ -49,7 +48,7 @@ All rights reserved.
 
 Version: %s
 
-""" % __version__
+""" % jeju.__version__
 
 usage = "usage: %prog [options] arg"
 
@@ -478,7 +477,7 @@ def main():
     (options,args) = parser.parse_args()
 
     if options.version:
-        print __version__
+        print jeju.__version__
         sys.exit()
 
     if options.kv:
@@ -530,6 +529,7 @@ def main():
         fh.setFormatter(formatter)
         fh.setLevel(level)
         logging.getLogger('').addHandler(fh)
+        jeju.__logging__ = "file"
 
     # Load hostname
     import socket
