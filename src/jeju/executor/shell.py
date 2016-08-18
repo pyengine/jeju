@@ -33,7 +33,6 @@ def shell_bash(**kwargs):
     @return: 
         dictionary of input, output, error
     """
-    print jeju.__version__
     code = kwargs['code']
     kv = kwargs['kv']
 

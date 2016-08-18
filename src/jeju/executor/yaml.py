@@ -69,9 +69,24 @@ def execute_yaml(**kwargs):
         print msg
         return msg
 
+    ####################################
+    # Warning: We install ruamel.yaml
+    ####################################
     if exist_ruamel == False:
         logger.error(err_msg)
-        return {'input':rcode, 'output':'[ERROR] Install ruamel.yaml'}
+        distro = jeju.detect_dist()
+        os_ = distro['distname'].split(' ')[0].lower()
+        if os_ == "ubuntu" or os_ == "debian":
+            cmd = "apt-get update;apt-get install -y gcc python-dev;pip install ruamel.yaml"
+        elif os_ == "centos" or os_ == "redhat":
+            cmd = "yum install -y python-devel gcc;pip install ruamel.yaml"
+        else:
+            return {'input':rcode, 'output':'[ERROR] Install ruamel.yaml'}
+
+        import os
+        os.system(cmd)
+        import ruamel.yaml
+        from ruamel.yaml.util import load_yaml_guess_indent
 
     config, ind, bsi = load_yaml_guess_indent(open(file_path))
     config2, ind2, bsi2 = load_yaml_guess_indent(rcode)
