@@ -533,9 +533,19 @@ def main():
 
     # Load hostname
     import socket
-    KV['HOSTNAME'] = socket.gethostname()
-    KV['IP'] = socket.gethostbyname(KV['HOSTNAME'])
-
+    if KV.has_key('HOSTNAME') == False:
+        KV['HOSTNAME'] = socket.gethostname()
+    else:
+        logging.info("Hostname is overrided")
+    if KV.has_key('IP') == False:
+        try:
+            KV['IP'] = socket.gethostbyname(KV['HOSTNAME'])
+        except:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("google.com",80))
+            KV['IP'] = s.getsockname()[0]
+    else:
+        logging.info("IP is overrided")
     if options.md:
         logging.info("Start Jeju: %s" % options.md)
     else:
